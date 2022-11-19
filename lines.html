@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Drawing lines</title>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from './node_modules/three/build/three.module.js';
+
+        const renderer = new THREE.WebGLRenderer();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+        document.body.appendChild( renderer.domElement );
+
+        const camera = new THREE.PerspectiveCamera(
+            45 , window.innerWidth / window.innerHeight , 1 , 500
+        );
+
+        camera.position.set( 0 , 0 , 100 );
+
+        camera.lookAt( 0 , 0 , 0 );
+
+        const scene = new THREE.Scene();
+
+        /**
+         *  선을 그릴때 사용하는 메서드
+         *
+         *  LineBasicMaterial , LineDashedMaterial
+         */
+        const material = new THREE.LineBasicMaterial( { color : 0x0000ff } );
+
+        /**
+         *  - 꼭짓점 정의
+         */
+        const points = [];
+
+        points.push( new THREE.Vector3( -10 , 0 , 0 ) );
+        points.push( new THREE.Vector3( 0 , 10 , 0 ) );
+        points.push( new THREE.Vector3( 10 , 0 , 0 ) );
+
+        /**
+         *
+         * - cube 에 필요한 꼭짓점( vertices ) 정의
+         */
+        const geometry = new THREE.BufferGeometry().setFromPoints( points );
+
+        /**
+         * - 재질( material ) 과 선( geometry ) 가 있기 때문에 선을 그릴 수 있다
+         * @type {Line}
+         */
+        const line = new THREE.Line( geometry , material );
+
+        /** 씬에 추가 */
+        scene.add( line );
+
+        /** 화면 렌더링 */
+        renderer.render( scene , camera );
+
+    </script>
+</body>
+</html>

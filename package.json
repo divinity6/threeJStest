@@ -1,0 +1,19 @@
+{
+  "name": "threejs",
+  "version": "1.0.0",
+  "description": "threeJsTest",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {},
+  "keywords": [
+    "threeJsTest"
+  ],
+  "author": "hoon",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "three": "^0.146.0"
+  }
+}

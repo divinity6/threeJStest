@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>My first three.js app</title>
+    <style>
+        body { margin: 0 }
+        canvas { display: block }
+    </style>
+    <script type="module">
+
+        import * as THREE from './node_modules/three/build/three.module.js';
+
+        const scene = new THREE.Scene();
+        /**
+         * - THREEJS 에서 제공하는 카메라 중 하나
+         *
+         * @name PerspectiveCamera
+         *
+         * @type {PerspectiveCamera}
+         * @param { number } FOV - 시야각
+         * @param { number } aspectRatio - 종횡비
+         * @param { number } near - 이 값보다 가까이 있으면 렌더링되지 않습니다
+         * @param { number } far - 이 값보다 멀리 있으면 렌더링되지 않습니다
+         */
+        const camera = new THREE.PerspectiveCamera(
+            75 , window.innerWidth / window.innerHeight , 0.1 , 1000
+        )
+
+        /**
+         *
+         * - 오래된 브라우저 , or WebGL 을 지원안할때 사용하기 위함
+         *
+         * @name WebGLRenderer
+         */
+        const renderer = new THREE.WebGLRenderer();
+
+        /**
+         * - 렌더링 사이즈
+         *
+         * @name setSize
+         * @param { number } width - 렌더러 너비
+         * @param { number } height - 렌더러 높이
+         * @param { boolean } updateStyle - 고해상도 렌더링 여부
+         */
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+        document.body.appendChild( renderer.domElement );
+
+        /** ================================================================= */
+
+        /**
+         *
+         * - cube 에 필요한 꼭짓점( vertices ) 및 면( faces )가 포함되어있다
+         *
+         * @type { BoxGeometry }
+         */
+        const geometry = new THREE.BoxGeometry( 1 , 1 , 1 );
+
+        /**
+         * - 무언가를 색칠해주고자할때 사용
+         *
+         * @type {MeshBasicMaterial}
+         */
+        const material = new THREE.MeshBasicMaterial( { color : 0x00ff00 } );
+
+        /**
+         * geometry , geometry 를 받아, 재질을 적용하고, 움직일 수 있도록 mesh 를 맨들어준다
+         * @type {Mesh}
+         */
+        const cube = new THREE.Mesh( geometry , material );
+
+        /**
+         *  - scene 에 추가
+         */
+        scene.add( cube );
+
+        camera.position.z = 5;
+
+        /** ================================================================= */
+
+        /** animate loop */
+        function animate(){
+            /**
+             * Reflow : DOM 노드의 레이아웃이 변경되면 영향을 받는 모든 노드의 수치를 다시 계산하여 레이아웃 트리를 재생성하는 작업
+             *
+             * --> DOM 의 스타일 변경, node 추가,제거등 Reflow 를 겪게 된다
+             *
+             * --> 가급적 말단에 위치한 노드의 수치를 변경해야 Reflow 수행 비용을 줄일 수 있다
+             *
+             * --> 애니메이션이 들어간노드는 position absolute, fixed 로 분리해야 Reflow 를 줄일 수 있다
+             *     ( or 애니메이션 시작시 fixed , absolute 끝날시 되돌리기 )
+             *
+             * RePaint : Reflow 과정이 끝나고 재생성된 레이아웃 트리( 렌더 트리 )를 다시 레이어에 그리는 작업
+             *
+             *
+             *
+             * - setInterval 대신 사용하는 이유 :
+             *
+             *   브라우저가 다음 RePaint 가 진행되기전에 해당 callback 함수를 호출하도록한다
+             *
+             *   ( 콜백의 호출 수는 보통 1초에 60회 , but 보통 디스플레이 주사율 )
+             *
+             *   백그라운드 탭 or hidden , <iframe>등에서 실행이 중단된다
+             */
+            requestAnimationFrame( animate );
+
+            /** cube 동작 */
+            cube.rotation.x += 0.01;
+
+            cube.rotation.y += 0.01;
+
+            renderer.render( scene , camera );
+
+        }
+
+        animate();
+
+        /** ================================================================= */
+        console.log( THREE )
+        // import * as OrbitControls from "./node_modules/three/examples/jsm/controls/OrbitControls.js";
+
+
+        // console.log( OrbitControls )
+        // const controls = new OrbitControls( camera , renderer.domElement );
+
+
+    </script>
+</head>
+<body>
+</body>
+</html>
