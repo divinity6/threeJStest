@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>ThreeJS 기본 예제</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="importmap">
+        {
+            "imports" : {
+                "three" : "../../../node_modules/three/build/three.module.js",
+                "controls/" : "../../../node_modules/three/examples/jsm/controls/"
+            }
+        }
+    </script>
+    <!-- defer : 페이지가 모두 로드된 이후 -->
+    <script type="module" src="./app.mjs" defer></script>
+</head>
+<body>
+    <div id="webgl-container"></div>
+</body>
+</html>
