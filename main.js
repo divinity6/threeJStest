@@ -1,18 +1,19 @@
-/** 일단 패스 박아둠 */
-// const path = "01Refactoring/index.html";
-const path = "/";
-
 /**
  * 1. 코드는 강좌에 맞춘 것으로 범용성이 없습니다.
  * 2. 명령어 창에서 node main.js를 실행하기 전에
  *    먼저 express.js를 설치해야 합니다.
  */
 "use strict";
+
+console.log( 'fileName :' , __filename )
+console.log( 'dirname :' , __dirname )
+
 const express = require( 'express' );
 const app = express();
 const url = require('url');
+const port = 2233;
 
-app.use( express.static( 'source' ) );
+app.use( express.static( '/source' ) );
 
 app.use( function ( req, res ) {
 
@@ -22,7 +23,7 @@ app.use( function ( req, res ) {
 
     const parseURL = url.parse( req.url );
     if ( '/' === parseURL.href ){
-        res.sendFile( path , { root : __dirname } );
+        res.sendFile( '/' , { root : __dirname } );
         return;
     }
 
@@ -44,6 +45,30 @@ app.use( function ( req, res ) {
     }
 });
 
-app.listen( 2233 );
+app.use( express.static(__dirname + '/sample' ) );
+const path = require( 'path' );
 
-console.log('localhost:2233/ 경로 입력');
+console.log( 'path :' , path.join( __dirname,
+    '/node_modules/three/build' ) )
+
+app.use(
+    '/build/',
+    express.static(path.join(
+        __dirname,
+        '/node_modules/three/build'
+    ))
+)
+
+app.use(
+    '/jsm/',
+    express.static(path.join(
+        __dirname,
+        '/node_modules/three/examples/jsm'
+    ))
+)
+
+
+app.listen( port , () => {
+    console.log(`localhost:${ port }/ 경로 입력`);
+});
+
